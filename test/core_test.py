@@ -3,7 +3,7 @@ import time
 
 from faker import Faker
 
-from bing_translation_for_python import core, setting
+from bing_translation_for_python import core
 
 
 class Translate(unittest.TestCase):
@@ -137,17 +137,3 @@ class Semantic(unittest.TestCase):
             len(self.semantic)
         except TypeError:
             self.fail('semantic 没有__len__方法')
-
-
-class Core(unittest.TestCase):
-
-    def test_update_language_code_and_save(self):
-        """更新语言 tgt"""
-        tgt_lan_of_net_work = core.update_language_code()
-        tgt_lag_of_file = core.Conf.read_inf(setting.LANGUAGE_CODE_PATH)
-
-        self.assertEqual(tgt_lag_of_file, tgt_lan_of_net_work)
-
-
-if __name__ == "__main__":
-    unittest.main()

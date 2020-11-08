@@ -2,10 +2,8 @@ import collections
 import os
 
 import requests
-import bs4
 
 from .public import errors
-from . import setting
 
 from .setting import Conf
 
@@ -25,7 +23,7 @@ def language_check(func):
     """检查语言是否在支持列表内"""
 
     def run(self, tolang, *args, **kwargs):
-        if tolang not in Conf.read_inf(setting.LANGUAGE_CODE_PATH):
+        if tolang not in Conf().tgt_lang:
             raise errors.TargetLanguageNotSupported(tolang)
         return func(self, tolang, *args, **kwargs)
 
@@ -41,22 +39,6 @@ def equal_language_check(func):
         return func(self, from_lang, to_lang, reper_text)
 
     return run
-
-
-def update_language_code():
-    """语言代码更新"""
-    # 读取配置
-    conf_table = Conf.read_inf(setting.CONF_PATH)
-    # 读取页面，并获取所有语言标签
-    tgt_all_lang = bs4.BeautifulSoup(
-        requests.get(conf_table['server']['home_page']).text,
-        'html.parser'
-    ).find(id='t_tgtAllLang').find_all('option')
-
-    # 格式化为标准字典
-    data = {i.attrs['value']: {'text': i.text} for i in tgt_all_lang}
-    Conf.save_ini(setting.LANGUAGE_CODE_PATH, data)
-    return data
 
 
 SemanticItem = collections.namedtuple('SemanticItem', ['text', 'semantic'])

@@ -1,13 +1,12 @@
 from configparser import ConfigParser, NoSectionError
 from random import randint
+
 from .public import errors
 from typing import Dict
 import os
 
-BASE_DIR_INSIDE = os.path.dirname(os.path.abspath(__file__))
-BASE_DIR_OUTSIDE = os.path.dirname(BASE_DIR_INSIDE)
-
-LANGUAGE_CODE_PATH = os.path.join(BASE_DIR_OUTSIDE, 'ini/language_code.ini')
+from bs4 import BeautifulSoup as soup
+from requests import get
 
 SEMANTIC_URL = 'https://cn.bing.com/tlookupv3'
 HOME_PAGE_URL = 'https://cn.bing.com/translator/'
@@ -39,13 +38,21 @@ def file_check(func):
     return run
 
 
+def update_language_code():
+    tags = soup(
+        get(HOME_PAGE_URL).text,
+        'html.parser'
+    ).find(id='t_tgtAllLang').find_all('option')
+
+    return {tag.attrs['value']: tag.text for tag in tags}
+
+
 class Conf:
-
     def __init__(self):
-        pass
+        self.tgt_lang = update_language_code()
 
-    @staticmethod
-    @file_check
+    @ staticmethod
+    @ file_check
     def read_inf(path: str) -> Dict[str, Dict[str, str]]:
         """读取配置文件"""
         c_p = ConfigParser()
@@ -53,7 +60,7 @@ class Conf:
 
         return {i: dict(c_p.items(i)) for i in c_p.sections()}
 
-    @staticmethod
+    @ staticmethod
     def save_ini(path: str, data_table: Dict[str, Dict[str, str]]):
         c_p = ConfigParser()
         c_p.read(path, encoding='UTF-8')
