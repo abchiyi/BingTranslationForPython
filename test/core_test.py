@@ -143,57 +143,6 @@ class Semantic(unittest.TestCase):
 
 class Core(unittest.TestCase):
 
-    def setUp(self):
-        self.test_ini_path = os.path.join(setting.BASE_DIR_OUTSIDE, 'test.ini')
-        # 翻译函数请求数据
-        self.d_t = {
-            "url": ''.join(['https://cn.bing.com/',
-                            'ttranslatev3?isVertical=1&',
-                            '&IG=ECCC2E222205418FB249C51DB6C943BF&',
-                            'IID=translator.5028.1'
-                            ]),
-            "headers": {
-                "user-agent": ' '.join([
-                    'Mozilla/5.0',
-                    '(Windows NT 10.0; Win64; x64)',
-                    'AppleWebKit/537.36',
-                    '(KHTML, like Gecko)',
-                    'Chrome/80.0.3987.132 Safari/537.36 Edg/80.0.361.66'
-                ])
-            },
-            'data': {
-                "fromLang": "auto-detect",
-                "to": "zh-Hans",
-                "text": None
-            }
-        }
-
-    def translator(self, text, lang_code):
-        """翻译函数接口"""
-        self.d_t["data"]["text"] = text
-        self.d_t["data"]["to"] = lang_code
-        res = requests.post(**self.d_t).json()
-        try:
-            return res[0]['translations'][0]['text']
-        except KeyError as error:
-            print(res)
-            raise error
-
-    def test_can_save_setting(self):
-        path = self.test_ini_path
-        try:
-            data_table1 = {'test': {'test1': 'test2'}}
-            setting.Conf.save_ini(path, data_table1)
-            self.assertEqual(data_table1, core.Conf.read_inf('test.ini'))
-
-            data_table2 = {'test3': {'test4': 'test5'}}
-            setting.Conf.save_ini(path, data_table2)
-            self.assertIn('test3', core.Conf.read_inf(path))
-            self.assertIn('test', core.Conf.read_inf(path))
-
-        finally:
-            os.system(F'del {path}')
-
     def test_update_language_code_and_save(self):
         """更新语言 tgt"""
         tgt_lan_of_net_work = core.update_language_code()
