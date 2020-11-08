@@ -7,9 +7,6 @@ import os
 BASE_DIR_INSIDE = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR_OUTSIDE = os.path.dirname(BASE_DIR_INSIDE)
 
-
-CONF_PATH = os.path.join(BASE_DIR_OUTSIDE, 'ini/conf.ini')
-
 LANGUAGE_CODE_PATH = os.path.join(BASE_DIR_OUTSIDE, 'ini/language_code.ini')
 
 SEMANTIC_URL = 'https://cn.bing.com/tlookupv3'
@@ -45,7 +42,7 @@ def file_check(func):
 class Conf:
 
     def __init__(self):
-        self.__conf__ = self.read_inf(CONF_PATH)
+        pass
 
     @staticmethod
     @file_check
@@ -76,8 +73,6 @@ class Conf:
         return {
             'url': TRANSLATOR_ENGINE_URL,
             'headers': HEADERS,
-            # TODO 待移除参数
-            # 'params': self.__conf__['params'],
             'data': {
                 'fromLang': fromlang,
                 'to': tolang,
@@ -89,8 +84,6 @@ class Conf:
         return {
             'url': SEMANTIC_URL,
             'headers': HEADERS,
-            # TODO 待移除参数
-            # 'params': self.__conf__['params'],
             'data': {
                 'from': fromlang,
                 'to': tolang,
