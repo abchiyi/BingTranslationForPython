@@ -179,17 +179,6 @@ class Core(unittest.TestCase):
             print(res)
             raise error
 
-    def test_base_dir_and_file(self):
-        self.assertTrue(os.path.exists(setting.BASE_DIR_INSIDE),
-                        F"Not Found FIle of Fir :{setting.BASE_DIR_INSIDE}")
-        self.assertTrue(os.path.exists(setting.CONF_PATH),
-                        F'Not Found File or Dir :{setting.CONF_PATH}')
-
-    def test_read_inf(self):
-        self.assertEqual(type(core.Conf.read_inf(setting.CONF_PATH)), dict)
-        self.assertEqual(type(core.Conf.read_inf(
-            setting.LANGUAGE_CODE_PATH)), dict)
-
     def test_can_save_setting(self):
         path = self.test_ini_path
         try:
