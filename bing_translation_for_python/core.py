@@ -1,5 +1,3 @@
-from configparser import ConfigParser, NoSectionError
-from typing import Dict
 import collections
 import os
 
@@ -8,6 +6,8 @@ import bs4
 
 from .public import errors
 from . import setting
+
+from .setting import Conf
 
 
 def file_check(func):
@@ -43,22 +43,6 @@ def equal_language_check(func):
     return run
 
 
-def save_ini(path: str, data_table: Dict[str, Dict[str, str]]):
-    c_p = ConfigParser()
-    c_p.read(path, encoding='UTF-8')
-
-    for section in data_table.keys():
-        for option in data_table[section].keys():
-            try:
-                c_p.set(section, option, data_table[section][option])
-            except NoSectionError:
-                c_p.add_section(section)
-                c_p.set(section, option, data_table[section][option])
-
-    with open(path, 'w', encoding='UTF-8') as file:
-        c_p.write(file)
-
-
 def update_language_code():
     """语言代码更新"""
     # 读取配置
@@ -71,63 +55,8 @@ def update_language_code():
 
     # 格式化为标准字典
     data = {i.attrs['value']: {'text': i.text} for i in tgt_all_lang}
-    save_ini(setting.LANGUAGE_CODE_PATH, data)
+    Conf.save_ini(setting.LANGUAGE_CODE_PATH, data)
     return data
-
-
-class Conf:
-
-    def __init__(self):
-        self.__conf__ = self.read_inf(setting.CONF_PATH)
-
-    @staticmethod
-    @file_check
-    def read_inf(path: str) -> Dict[str, Dict[str, str]]:
-        """读取配置文件"""
-        c_p = ConfigParser()
-        c_p.read(path, encoding='UTF-8')
-
-        return {i: dict(c_p.items(i)) for i in c_p.sections()}
-
-    @staticmethod
-    def save_ini(path: str, data_table: Dict[str, Dict[str, str]]):
-        c_p = ConfigParser()
-        c_p.read(path, encoding='UTF-8')
-
-        for section in data_table.keys():
-            for option in data_table[section].keys():
-                try:
-                    c_p.set(section, option, data_table[section][option])
-                except NoSectionError:
-                    c_p.add_section(section)
-                    c_p.set(section, option, data_table[section][option])
-
-        with open(path, 'w', encoding='UTF-8') as file:
-            c_p.write(file)
-
-    def template_of_translator(self, fromlang, tolang, text) -> dict:
-        return {
-            'url': self.__conf__['server']['translator'],
-            'headers': self.__conf__['headers'],
-            'params': self.__conf__['params'],
-            'data': {
-                'fromLang': fromlang,
-                'to': tolang,
-                'text': text,
-            }
-        }
-
-    def template_of_semantic(self, fromlang, tolang, text):
-        return {
-            'url': self.__conf__['server']['semantic'],
-            'headers': self.__conf__['headers'],
-            'params': self.__conf__['params'],
-            'data': {
-                'from': fromlang,
-                'to': tolang,
-                'text': text,
-            }
-        }
 
 
 SemanticItem = collections.namedtuple('SemanticItem', ['text', 'semantic'])
@@ -242,7 +171,7 @@ class Translator:
 
     def translator(self,
                    text: str = '',
-                   exclude_s: [str, list, tuple] = None) -> Text:
+                   exclude_s: str = None) -> Text:
         """翻译方法"""
 
         def format_text(strings, texts) -> str:

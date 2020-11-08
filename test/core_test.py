@@ -194,11 +194,11 @@ class Core(unittest.TestCase):
         path = self.test_ini_path
         try:
             data_table1 = {'test': {'test1': 'test2'}}
-            core.save_ini(path, data_table1)
+            setting.Conf.save_ini(path, data_table1)
             self.assertEqual(data_table1, core.Conf.read_inf('test.ini'))
 
             data_table2 = {'test3': {'test4': 'test5'}}
-            core.save_ini(path, data_table2)
+            setting.Conf.save_ini(path, data_table2)
             self.assertIn('test3', core.Conf.read_inf(path))
             self.assertIn('test', core.Conf.read_inf(path))
 
