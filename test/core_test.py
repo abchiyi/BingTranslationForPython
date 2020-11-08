@@ -1,9 +1,7 @@
 import unittest
 import time
-import os
 
 from faker import Faker
-import requests
 
 from bing_translation_for_python import core, setting
 
