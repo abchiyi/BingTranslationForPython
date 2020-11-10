@@ -1,6 +1,8 @@
 .vscode
 .idea
 try.py
+*.ini
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

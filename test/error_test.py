@@ -8,7 +8,7 @@ class ErrorsTest(unittest.TestCase):
         """配置文件读函数在找不到文件时抛出错误"""
         try:
             path = './sr.ini'
-            core.Conf.read_inf(path)
+            core.Config.read_inf(path)
         except public.errors.FileError:
             pass
         else:
@@ -51,7 +51,3 @@ class ErrorsTest(unittest.TestCase):
             pass
         else:
             self.fail('Not captured:EqualTextLanguage')
-
-
-if __name__ == "__main__":
-    unittest.main()

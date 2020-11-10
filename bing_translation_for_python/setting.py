@@ -2,6 +2,7 @@ from configparser import ConfigParser, NoSectionError
 from random import randint
 
 from .public import errors
+from pathlib import Path
 from typing import Dict
 import os
 
@@ -39,29 +40,36 @@ def file_check(func):
 
 
 def update_language_code():
-    tags = soup(
-        get(HOME_PAGE_URL).text,
-        'html.parser'
-    ).find(id='t_tgtAllLang').find_all('option')
+    response = get(HOME_PAGE_URL)
+    bfs = soup(response.text, 'html.parser')
+    tags = bfs.find(id='t_tgtAllLang').find_all('option')
 
-    return {tag.attrs['value']: tag.text for tag in tags}
+    return {tag.attrs['value']: {'text': tag.text} for tag in tags}
 
 
-class Conf:
-    def __init__(self):
-        self.tgt_lang = update_language_code()
+class Config:
+    def __init__(self, file_path=False, file_name="conf.ini"):
+        # 验证配置文件模式
+        if file_path:
+            try:
+                self.tgt_lang = self.read_inf(file_path, file_name)
+            except errors.FileError:
+                self.tgt_lang = update_language_code()
+                self.save_ini(file_path, file_name, self.tgt_lang)
+        else:
+            self.tgt_lang = update_language_code()
 
     @ staticmethod
     @ file_check
-    def read_inf(path: str) -> Dict[str, Dict[str, str]]:
+    def read_inf(file_name, path) -> Dict[str, Dict[str, str]]:
         """读取配置文件"""
         c_p = ConfigParser()
-        c_p.read(path, encoding='UTF-8')
+        c_p.read(os.path.join(file_name, path), encoding='UTF-8')
 
         return {i: dict(c_p.items(i)) for i in c_p.sections()}
 
     @ staticmethod
-    def save_ini(path: str, data_table: Dict[str, Dict[str, str]]):
+    def save_ini(file_name, path, data_table: Dict[str, Dict[str, str]]):
         c_p = ConfigParser()
         c_p.read(path, encoding='UTF-8')
 
@@ -73,7 +81,13 @@ class Conf:
                     c_p.add_section(section)
                     c_p.set(section, option, data_table[section][option])
 
-        with open(path, 'w', encoding='UTF-8') as file:
+        path = Path(path)
+
+        if not path.is_dir():
+            path.mkdir()
+
+        full_path = os.path.join(path, file_name)
+        with open(full_path, 'w', encoding='UTF-8') as file:
             c_p.write(file)
 
     def template_of_translator(self, fromlang, tolang, text) -> dict:
