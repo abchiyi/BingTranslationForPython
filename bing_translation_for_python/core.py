@@ -7,7 +7,7 @@ from .public import errors
 
 from .setting import Config
 
-# FIXME Config 对象在多个位置初始化
+CONFIG = Config()
 
 
 def file_check(func):
@@ -25,7 +25,7 @@ def language_check(func):
     """检查语言是否在支持列表内"""
 
     def run(self, tolang, *args, **kwargs):
-        if tolang not in Config().tgt_lang:
+        if tolang not in CONFIG.tgt_lang:
             raise errors.TargetLanguageNotSupported(tolang)
         return func(self, tolang, *args, **kwargs)
 
@@ -54,7 +54,7 @@ class Semantic:
         self.from_lang = from_lang
         self.to_lang = to_lang
 
-        template = Config().template_of_semantic(
+        template = Config.template_of_semantic(
             fromlang=from_lang,
             text=reper_text,
             tolang=to_lang,
@@ -101,7 +101,7 @@ class Text:
     def __init__(self, to_lang, reper_text, fromlang='auto-detect',):
         if reper_text.strip():
             data = requests.post(
-                **Config().template_of_translator(
+                **Config.template_of_translator(
                     fromlang=fromlang,
                     text=reper_text,
                     tolang=to_lang,
@@ -139,7 +139,7 @@ class Text:
 class Translator:
     """必应翻译"""
     @ language_check
-    def __init__(self, to_lang: str, config=Config()):
+    def __init__(self, to_lang: str, config=CONFIG):
         self.to_lang = to_lang
 
     def __enter__(self):

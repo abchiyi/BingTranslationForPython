@@ -48,14 +48,14 @@ def update_language_code():
 
 
 class Config:
-    def __init__(self, file_path=False, file_name="conf.ini"):
+    def __init__(self, save_path=False, file_name="conf.ini"):
         # 验证配置文件模式
-        if file_path:
+        if save_path:
             try:
-                self.tgt_lang = self.read_inf(file_path, file_name)
+                self.tgt_lang = self.read_inf(file_name, save_path)
             except errors.FileError:
                 self.tgt_lang = update_language_code()
-                self.save_ini(file_path, file_name, self.tgt_lang)
+                self.save_ini(file_name, save_path, self.tgt_lang)
         else:
             self.tgt_lang = update_language_code()
 
@@ -90,7 +90,8 @@ class Config:
         with open(full_path, 'w', encoding='UTF-8') as file:
             c_p.write(file)
 
-    def template_of_translator(self, fromlang, tolang, text) -> dict:
+    @ staticmethod
+    def template_of_translator(fromlang, tolang, text) -> dict:
         return {
             'url': TRANSLATOR_ENGINE_URL,
             'headers': HEADERS,
@@ -101,7 +102,8 @@ class Config:
             }
         }
 
-    def template_of_semantic(self, fromlang, tolang, text):
+    @staticmethod
+    def template_of_semantic(fromlang, tolang, text):
         return {
             'url': SEMANTIC_URL,
             'headers': HEADERS,
