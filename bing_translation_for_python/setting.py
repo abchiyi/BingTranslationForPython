@@ -32,7 +32,7 @@ def file_check(func):
     def run(file_name, path, *argv, **kwargs):
         if Path(os.path.join(path, file_name)).is_file():
             return func(file_name, path, *argv, **kwargs)
-        raise errors.FileError(
+        raise FileNotFoundError(
             F'FileNotFound\nPath:\n\t{path}\nFile:\n\t{file_name}'
         )
 

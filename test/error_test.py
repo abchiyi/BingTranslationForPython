@@ -8,10 +8,10 @@ class ErrorsTest(unittest.TestCase):
         """配置文件读函数在找不到文件时抛出错误"""
         try:
             core.Config.load('sr.ini', './')
-        except public.errors.FileError:
+        except FileNotFoundError:
             pass
         else:
-            self.fail('Not captured:FileError')
+            self.fail('Not captured:FileNotFoundError')
 
     def test_not_support_error(self):
         """在给出不受支持的目标语言代码时抛出错误"""
