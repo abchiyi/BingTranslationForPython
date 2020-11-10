@@ -29,11 +29,11 @@ HEADERS = {'User-Agent': AGENTS[randint(0, len(AGENTS) - 1)]}
 
 
 def file_check(func):
-    def run(path, *argv, **kwargs):
-        if os.access(path, os.F_OK) and os.access(path, os.R_OK):
-            return func(path, *argv, **kwargs)
+    def run(file_name, path, *argv, **kwargs):
+        if Path(os.path.join(path, file_name)).is_file():
+            return func(file_name, path, *argv, **kwargs)
         raise errors.FileError(
-            F'没有找到配置文件，或文件不可访问： \n{path}'
+            F'FileNotFound\nPath:\n\t{path}\nFile:\n\t{file_name}'
         )
 
     return run
@@ -48,28 +48,28 @@ def update_language_code():
 
 
 class Config:
-    def __init__(self, save_path=False, file_name="conf.ini"):
+    def __init__(self, save_path=False, file_name="config.ini"):
         # 验证配置文件模式
         if save_path:
             try:
-                self.tgt_lang = self.read_inf(file_name, save_path)
+                self.tgt_lang = self.load(file_name, save_path)
             except errors.FileError:
                 self.tgt_lang = update_language_code()
-                self.save_ini(file_name, save_path, self.tgt_lang)
+                self.save(file_name, save_path, self.tgt_lang)
         else:
             self.tgt_lang = update_language_code()
 
     @ staticmethod
     @ file_check
-    def read_inf(file_name, path) -> Dict[str, Dict[str, str]]:
+    def load(file_name, path) -> Dict[str, Dict[str, str]]:
         """读取配置文件"""
         c_p = ConfigParser()
-        c_p.read(os.path.join(file_name, path), encoding='UTF-8')
+        c_p.read(os.path.join(path, file_name), encoding='UTF-8')
 
         return {i: dict(c_p.items(i)) for i in c_p.sections()}
 
     @ staticmethod
-    def save_ini(file_name, path, data_table: Dict[str, Dict[str, str]]):
+    def save(file_name, path, data_table: Dict[str, Dict[str, str]]):
         c_p = ConfigParser()
         c_p.read(path, encoding='UTF-8')
 

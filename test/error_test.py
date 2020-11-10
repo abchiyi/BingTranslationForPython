@@ -7,7 +7,7 @@ class ErrorsTest(unittest.TestCase):
     def test_file_notfound(self):
         """配置文件读函数在找不到文件时抛出错误"""
         try:
-            core.Config.read_inf('sr.ini', './')
+            core.Config.load('sr.ini', './')
         except public.errors.FileError:
             pass
         else:
