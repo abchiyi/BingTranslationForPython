@@ -53,7 +53,7 @@ class Config:
         if save_path:
             try:
                 self.tgt_lang = self.load(file_name, save_path)
-            except errors.FileError:
+            except FileNotFoundError:
                 self.tgt_lang = update_language_code()
                 self.save(file_name, save_path, self.tgt_lang)
         else:

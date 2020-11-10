@@ -1,22 +1,25 @@
 import unittest
 import time
+import os
 
 from faker import Faker
 
-from bing_translation_for_python import core
+from bing_translation_for_python import core, setting
+
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
 
 class Translate(unittest.TestCase):
     def setUp(self):
         self.default_language = 'en'
-        self.faker_data = Faker(locale='zh_CN')
-        self.tar = core.Translator(self.default_language)
+        self.faker = Faker(locale='zh_CN')
+        config_dir = os.path.join(BASE_DIR, 'config')
+        config = setting.Config(config_dir)
+        self.tra = core.Translator(self.default_language, config)
 
         # texts
         self.text = '你好'
-        self.some_text = [self.faker_data.color_name()
-                          for i in range(5)]
-        self.color_names = [self.faker_data.color_name() for i in range(5)]
+        self.some_text = [self.faker.color_name() for i in range(5)]
 
     def tearDown(self):
         pass
@@ -24,7 +27,7 @@ class Translate(unittest.TestCase):
     def test_translator_with(self):
         tolang = 'zh-Hans'
         with core.Translator(tolang) as translator:
-            for text in [self.faker_data.color_name() for i in range(2)]:
+            for text in [self.faker.color_name() for i in range(2)]:
                 self.assertTrue(
                     isinstance(translator.translator(text).text(), str)
                 )
@@ -37,31 +40,31 @@ class Translate(unittest.TestCase):
         """
 
         # 分割参数接受字符串
-        t_text = self.tar.translator(
-            text='_'.join(self.color_names),
+        t_text = self.tra.translator(
+            text='_'.join(self.some_text),
             exclude_s='_'
         )
 
         self.assertEqual(
             t_text.text(),
-            ' '.join(self.color_names),
+            ' '.join(self.some_text),
             '功能：分割参数接受字符功能被破坏'
         )
 
         # 分割参数接受一个序列
-        t_text = self.tar.translator(
-            text='><'.join(self.color_names),
+        t_text = self.tra.translator(
+            text='><'.join(self.some_text),
             exclude_s=('>', '<')
         )
 
         self.assertEqual(
             t_text.text(),
-            ' '.join(self.color_names),
+            ' '.join(self.some_text),
             '功能：分割参数接受序列功能被破坏'
         )
 
     def test_translator_return_is_text_obj(self):
-        obj = self.tar.translator(self.text)
+        obj = self.tra.translator(self.text)
         self.assertTrue(
             isinstance(obj, core.Text),
             type(obj)
@@ -69,7 +72,7 @@ class Translate(unittest.TestCase):
 
     def test_json(self):
         """测试json方法是否有效"""
-        t_text = self.tar.translator(self.text)
+        t_text = self.tra.translator(self.text)
 
         # 实际调用返回对象的 ‘.json’方法
         self.assertTrue(
