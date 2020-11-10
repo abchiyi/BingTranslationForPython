@@ -23,14 +23,6 @@ class ErrorsTest(unittest.TestCase):
             self.fail(
                 'Not captured:TargetLanguageNotSupported with "Translator" obj'
             )
-        try:
-            core.Text('abc', 'hello')
-        except public.errors.TargetLanguageNotSupported:
-            pass
-        else:
-            self.fail(
-                'Not captured:TargetLanguageNotSupported with "Text" obj'
-            )
 
     def test_empty_text_error(self):
         """在没有给出文本时的错误"""

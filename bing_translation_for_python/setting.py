@@ -1,7 +1,6 @@
 from configparser import ConfigParser, NoSectionError
 from random import randint
 
-from .public import errors
 from pathlib import Path
 from typing import Dict
 import os

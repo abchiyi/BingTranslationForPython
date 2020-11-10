@@ -7,27 +7,14 @@ from .public import errors
 
 from .setting import Config
 
-CONFIG = Config()
-
 
 def file_check(func):
     def run(path, *argv, **kwargs):
         if os.access(path, os.F_OK) and os.access(path, os.R_OK):
             return func(path, *argv, **kwargs)
-        raise errors.FileError(
+        raise FileNotFoundError(
             F'没有找到配置文件，或文件不可访问： \n{path}'
         )
-
-    return run
-
-
-def language_check(func):
-    """检查语言是否在支持列表内"""
-
-    def run(self, tolang, *args, **kwargs):
-        if tolang not in CONFIG.tgt_lang:
-            raise errors.TargetLanguageNotSupported(tolang)
-        return func(self, tolang, *args, **kwargs)
 
     return run
 
@@ -97,7 +84,6 @@ class Semantic:
 
 
 class Text:
-    @language_check
     def __init__(self, to_lang, reper_text, fromlang='auto-detect',):
         if reper_text.strip():
             data = requests.post(
@@ -138,14 +124,23 @@ class Text:
 
 class Translator:
     """必应翻译"""
-    @ language_check
-    def __init__(self, to_lang: str, config=CONFIG):
+
+    def __init__(self, to_lang: str, config: Config = False):
+
+        # 不带参数实例化的Config类,极慢的实例化时间
+        if not config:
+            config = Config()
+        # 语言标签支持性检查
+        if to_lang not in config.tgt_lang:
+            raise errors.TargetLanguageNotSupported(F"不支持的语言:{to_lang}")
+
         self.to_lang = to_lang
 
     def __enter__(self):
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        # TODO 也许可以在这里设置打扫运行文件
         pass
 
     def __repr__(self):
