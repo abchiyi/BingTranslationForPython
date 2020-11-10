@@ -1,21 +1,16 @@
 import unittest
 import time
-import os
 
 from faker import Faker
 
-from bing_translation_for_python import core, setting
-
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+from bing_translation_for_python import core
 
 
 class Translate(unittest.TestCase):
     def setUp(self):
         self.default_language = 'en'
         self.faker = Faker(locale='zh_CN')
-        config_dir = os.path.join(BASE_DIR, 'config')
-        config = setting.Config(config_dir)
-        self.tra = core.Translator(self.default_language, config)
+        self.tra = core.Translator(self.default_language)
 
         # texts
         self.text = '你好'
