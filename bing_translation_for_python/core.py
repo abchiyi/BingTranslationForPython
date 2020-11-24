@@ -47,9 +47,15 @@ class Semantic:
             tolang=to_lang,
         )
 
-        self.__data__ = requests.post(
-            **template
-        ).json()[0]['translations']
+        try:
+            self.__data__ = requests.post(
+                **template
+            ).json()[0]['translations']
+
+        # 某些特殊的正确文本不能被服务器正确处理
+        # 设置一个空列表来规避错误
+        except KeyError:
+            self.__data__ = []
 
     def __repr__(self):
         return F'"{self.reper_text}"({self.from_lang})-->({self.to_lang})'
