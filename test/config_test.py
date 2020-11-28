@@ -5,7 +5,8 @@ import pathlib
 import shutil
 import os
 
-from bing_translation_for_python import core, setting
+from bing_translation_for_python import Translator
+from bing_translation_for_python import setting
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -25,7 +26,7 @@ class Config(unittest.TestCase):
     def test_save_config(self):
         config = setting.Config(self.save_dir)
         # Translator 接受 config对象作为参数
-        core.Translator('en', config=config)
+        Translator('en', config=config)
 
         # 检测文件夹是否被自动创建
         try:

@@ -3,14 +3,15 @@ import time
 
 from faker import Faker
 
-from bing_translation_for_python import core
+from bing_translation_for_python import Translator
+from bing_translation_for_python.core import Text, Semantic, SemanticItem
 
 
-class Translate(unittest.TestCase):
+class TranslateTest(unittest.TestCase):
     def setUp(self):
         self.default_language = 'en'
         self.faker = Faker(locale='zh_CN')
-        self.tra = core.Translator(self.default_language)
+        self.tra = Translator(self.default_language)
 
         # texts
         self.text = '你好'
@@ -21,7 +22,7 @@ class Translate(unittest.TestCase):
 
     def test_translator_with(self):
         tolang = 'zh-Hans'
-        with core.Translator(tolang) as translator:
+        with Translator(tolang) as translator:
             for text in [self.faker.color_name() for i in range(2)]:
                 self.assertTrue(
                     isinstance(translator.translator(text).text(), str)
@@ -61,7 +62,7 @@ class Translate(unittest.TestCase):
     def test_translator_return_is_text_obj(self):
         obj = self.tra.translator(self.text)
         self.assertTrue(
-            isinstance(obj, core.Text),
+            isinstance(obj, Text),
             type(obj)
         )
 
@@ -76,20 +77,20 @@ class Translate(unittest.TestCase):
         )
 
 
-class Semantic(unittest.TestCase):
+class SemanticTest(unittest.TestCase):
 
     def setUp(self):
-        self.tar = core.Translator('en').translator('你好')
+        self.tar = Translator('en').translator('你好')
         self.semantic = self.tar.semantic()
 
     def test_text_obj_semantic_return_is_semantic_obj(self):
         """Text对象的semantic方法返回Semantic对象"""
         self.assertTrue(
-            isinstance(self.tar, core.Text),
+            isinstance(self.tar, Text),
             type(self.tar)
         )
         self.assertTrue(
-            isinstance(self.semantic, core.Semantic),
+            isinstance(self.semantic, Semantic),
             type(self.semantic)
         )
 
@@ -118,11 +119,11 @@ class Semantic(unittest.TestCase):
     def test_is_iterative(self):
         """Semantic对象是可迭代的"""
         for i in self.semantic:
-            isinstance(i, core.SemanticItem)
+            isinstance(i, SemanticItem)
 
     def test_attr(self):
         """Semantici必须包含的属性"""
-        semantic = core.Translator('zh-Hans').translator('Hello').semantic()
+        semantic = Translator('zh-Hans').translator('Hello').semantic()
 
         try:
             print(semantic.from_lang)

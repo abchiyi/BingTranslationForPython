@@ -1,5 +1,5 @@
 import unittest
-from bing_translation_for_python import core, public
+from bing_translation_for_python import Translator, errors, core
 
 
 class ErrorsTest(unittest.TestCase):
@@ -16,8 +16,8 @@ class ErrorsTest(unittest.TestCase):
     def test_not_support_error(self):
         """在给出不受支持的目标语言代码时抛出错误"""
         try:
-            core.Translator('abc')
-        except public.errors.TargetLanguageNotSupported:
+            Translator('abc')
+        except errors.TargetLanguageNotSupported:
             pass
         else:
             self.fail(
@@ -28,8 +28,8 @@ class ErrorsTest(unittest.TestCase):
         """在没有给出文本时的错误"""
         try:
             # 确保字符串仅包含空格时也作为空处理
-            core.Translator('en').translator('  ')
-        except public.errors.EmptyTextError:
+            Translator('en').translator('  ')
+        except errors.EmptyTextError:
             pass
         else:
             self.fail('Not captured:EmptyTextError')
@@ -38,7 +38,7 @@ class ErrorsTest(unittest.TestCase):
         """文本语言与给出的语言码相等时抛出错误"""
         try:
             core.Text('en', 'hello').semantic()
-        except public.errors.EqualTextLanguage:
+        except errors.EqualTextLanguage:
             pass
         else:
             self.fail('Not captured:EqualTextLanguage')
