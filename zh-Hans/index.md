@@ -15,13 +15,22 @@ text = Translator('en').translator('你好')
 
 print(text)
 ```
-保存并执行`hello.py`,你能够在控制台中输出了` hello.`<br>
+保存并执行`hello.py`,你能够看见在控制台中输出了` hello.` .在`hello.py`中将简体中文的文本翻译成为了英语.
 
 <!-- TODO 未定义的url链接-->
-### [*Translation*]()类
+#### 初始化*Translation*类
 想要翻译文本你首先需要实例化一个*Translation*对象,并提供一个必要参数来设定你想要翻译到的语言.<br>例如你想要将一段文本翻译到英语.
 ```python
-Translator(to_lang='en')
+from bing_translation_for_python import Translator
+
+tr = Translator(to_lang='en')
 ```
 这个参数仅支持固定的值,支持列表[在这里查看]().<br>
 *Translator*还接受一个*Config*对象来定义一些可选设置,[在这里查看]()
+
+#### 翻译文本
+现在你已经初始化了一个*Translator*对象,并将目标语言设定为了英语('en')现在来调用该对象的翻译方法.它将会把任何支持的语言翻译到英语('en').在这里还是使用中文-简体('zh-Hans')来演示
+```python
+text = tr.translator('你好')
+```
+*.translator*会返回一个[*Text*]()对象,可以通过它的 *.json* 方法获取来自服务器的原始数据,亦或者通过 *.text*方法获取格式化后的文本

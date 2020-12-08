@@ -1,12 +1,9 @@
 ## Welcome|欢迎
-Choose your language|选择你的语言
-[En]()|[Zh-Hans](zh-Hans/)
+Choose your language|选择你的语言<br>
+[En]()|[中文](zh-Hans/)
 
 
-You can use the [editor on GitHub](https://github.com/abchiyi/BingTranslationForPython/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
+##
 ### Markdown
 
 Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
