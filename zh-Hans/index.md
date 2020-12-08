@@ -22,9 +22,9 @@ print(text)
 * to_lang
     * 这是一个**str**参数,且只接受特定的值,支持列表[在这里查看][1]
 * config
+      <!-- TODO 为Config设置如何使用的文档 -->
     * 这个参数接受[*Config*](api/config)对象,用来定义一些可选设置.
-    <!-- TODO 为Config设置如何使用的文档 -->
-    * [在这里查看如何使用它]()
+    [在这里查看如何使用它]()
 
 ```python
 from bing_translation_for_python import Translator
@@ -33,26 +33,36 @@ tr = Translator(to_lang='en')
 ```
 
 #### 翻译文本
-现在你已经初始化了一个*Translator*对象,并将目标语言设定为了英语('en')现在来调用该对象的翻译方法.它将会把任何支持的语言翻译到英语('en').在这里还是使用中文-简体('zh-Hans')来演示
+现在你已经初始化了一个[*Translator*]()对象,并将目标语言设定为了英语('en')现在来调用该对象的翻译方法.它将会把任何支持的语言翻译到英语('en').在这里还是使用中文-简体('zh-Hans')来演示
 ```python
 text = tr.translator('你好')
 ```
-**.translator**会返回一个[*Text*]()对象,可以通过它的 **.json**方法获取来自服务器的json数据,亦或者通过 **.text**方法获取格式化后的文本,或是使用**print**函数直接将它打印到控制台
+**.translator**会返回一个[*Text*]()对象.它含有两个常用方法来获取数据
+* **.text**
+    * 这个方法返回格式化后的字符串
+* **.json**
+    * 这个方法返回**json**数据
 
 #### 获取单词的详细释义
-你可以对[*Text*]()对象调用它的 **.semantic**方法,这个方法不需要任何参数.该方法返回一个[*Semantic*]()对象,它的内部包含了目标语言中对于的解释意思和同义词和近义词等等信息.可以通过类似操作序列的方式获取数据.
+你可以对[*Text*]()对象调用它的 **.semantic**方法,这个方法不需要任何参数.该方法返回一个[*Semantic*]()对象.
 ```python
 semantics = text.semantic()
+```
+* [*Semantic*]()对象支持类似序列的方式来处理它
+```python
+sem = semantics[1]
 
 for sem in semantics:
-    print(sem.text)
-    print(sem.semantic)
+    sem.text
+    sem.semantic
 ```
-或者你可以直接获取排版好的文本或者原始json数据
-```python
-print(semantics.text())
-print(semantic.json())
-```
+
+或者你可以调用[*Semantic*]()对象的方法来获取数据
+* **.text**
+    * 该方法返回排版后的字符串
+* **.json**
+    * 这个方法返回**json**数据
+
 其中[*Semantic*]()对象中包含的条目为[*SemanticItem*]()对象,它实质上是一个*namedtuple*.
 
 
