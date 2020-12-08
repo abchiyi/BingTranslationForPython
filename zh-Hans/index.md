@@ -77,8 +77,8 @@ for sem in semantics:
 <!-- 语言支持 -->
 [1]:supportedlanguages
 <!-- Translator -->
-[2]:api/translator/
+[2]:api/translator
 <!-- Text -->
-[3]:api/text/
+[3]:api/text
 <!-- Semantic -->
 [4]:api/semantic
