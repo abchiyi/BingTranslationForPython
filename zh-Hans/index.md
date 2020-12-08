@@ -43,7 +43,13 @@ for sem in semantics:
     print(sem.text)
     print(sem.semantic)
 ```
+或者你可以直接获取排版好的文本或者原始json数据
+```python
+print(semantics.text())
+print(semantic.json())
+```
 其中[*Semantic*]()对象中包含的条目为[*SemanticItem*]()对象,它实质上是一个*namedtuple*.
+
 
 ## 更多
 * 更多详细文档点击[这里]()
