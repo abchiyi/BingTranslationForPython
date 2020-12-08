@@ -1,3 +1,3 @@
-[目录](./api/)
+[目录](../api/)
 
 ## Translator
