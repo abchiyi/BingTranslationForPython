@@ -1,4 +1,7 @@
-## Welcome to GitHub Pages
+## Welcome|欢迎
+Choose your language|选择你的语言
+[En]()|[Zh-Hans](zh-Hans/)
+
 
 You can use the [editor on GitHub](https://github.com/abchiyi/BingTranslationForPython/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
 
