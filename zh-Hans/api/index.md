@@ -1,4 +1,4 @@
-[Home](zh-Hnas/)
+[Home](../)
 ## 目录
 * [**Translator**](translator)
 * [**Text**](text)
