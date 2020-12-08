@@ -70,7 +70,7 @@ for sem in semantics:
 
 <!-- TODO 终端工具的文档链接和项目地址 -->
 ## 一个小工具
-这是一个终端中的翻译工具,使用pip来安装它.[文档]()&[项目地址]()
+这是一个终端中的翻译工具,使用pip来安装它.[项目地址](https://github.com/abchiyi/BingTerminaTranslator)
 
     pip install bing-terminal-translator
 
