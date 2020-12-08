@@ -33,4 +33,13 @@ tr = Translator(to_lang='en')
 ```python
 text = tr.translator('你好')
 ```
-*.translator*会返回一个[*Text*]()对象,可以通过它的 *.json* 方法获取来自服务器的原始数据,亦或者通过 *.text*方法获取格式化后的文本
+*.translator*会返回一个[*Text*]()对象,可以通过它的 **.json**方法获取来自服务器的json数据,亦或者通过 **.text**方法获取格式化后的文本,或是使用**print**函数直接将它打印到控制台
+
+#### 获取单词的详细释义
+你可以对*Text*对象调用它的 **.semantic**方法,这个方法不需要任何参数.该方法返回一个[*Semantic*]()对象,它的内部包含了目标语言中对于的解释意思和同义词和近义词等等信息.可以通过类似操作序列的方式获取数据.
+```python
+semantics = text.semantic()
+
+for sem in semantics:
+    print(sem)
+```
