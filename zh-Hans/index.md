@@ -22,9 +22,7 @@ print(text)
 * to_lang
     * 这是一个**str**参数,且只接受特定的值,支持列表[在这里查看][1]
 * config
-      <!-- TODO 为Config设置如何使用的文档 -->
     * 这个参数接受[*Config*](api/config)对象,用来定义一些可选设置.
-    [在这里查看如何使用它]()
 
 ```python
 from bing_translation_for_python import Translator
@@ -63,7 +61,7 @@ for sem in semantics:
 * **.json**
     * 这个方法返回**json**数据
 
-其中[*Semantic*]()对象中包含的条目为[*SemanticItem*]()对象,它实质上是一个*namedtuple*.
+>其中[*Semantic*]()对象中包含的条目为[*SemanticItem*]()对象,它实质上是一个*namedtuple*.
 
 
 ## 更多
@@ -75,4 +73,11 @@ for sem in semantics:
 
     pip install bing-terminal-translator
 
+<!-- 语言支持 -->
 [1]:supported-languages/
+<!-- Translator -->
+[2]:api/translator/
+<!-- Text -->
+[3]:api/text/
+<!-- Semantic -->
+[4]:api/semantic
