@@ -2,3 +2,4 @@
 * [**Translator**](translator/)
 * [**Text**](text/)
 * [**Semantic**](semantic/)
+* [**Config**](config/)
