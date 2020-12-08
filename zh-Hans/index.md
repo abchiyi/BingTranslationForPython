@@ -75,7 +75,7 @@ for sem in semantics:
     pip install bing-terminal-translator
 
 <!-- 语言支持 -->
-[1]:supportedlanguages
+[1]:supported-languages
 <!-- Translator -->
 [2]:api/translator
 <!-- Text -->
