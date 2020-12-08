@@ -24,7 +24,7 @@ from bing_translation_for_python import Translator
 
 tr = Translator(to_lang='en')
 ```
-这个参数仅支持固定的值,支持列表[在这里查看](1).<br>
+这个参数仅支持固定的值,支持列表[在这里查看][1].<br>
 *Translator*还接受一个*Config*对象来定义一些可选设置,[在这里查看](api/config)
 
 #### 翻译文本
@@ -47,7 +47,7 @@ for sem in semantics:
 
 ## 更多
 * 更多详细文档点击[这里]()
-* 支持语言列表点击[这里](1)
+* 支持语言列表点击[这里][1]
 
 ## 一个小工具
 这是一个终端中的翻译工具,使用pip来安装它.[文档]()&[项目地址]()
